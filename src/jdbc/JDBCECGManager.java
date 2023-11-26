@@ -6,10 +6,8 @@ package jdbc;
 
 import Client.ECG;
 import ifaces.ECGManager;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,6 +29,7 @@ public class JDBCECGManager implements ECGManager {
     public JDBCECGManager(JDBCManager manager) {
         this.manager = manager;
     }
+
     public JDBCECGManager(Connection c) {
         this.c = c;
     }
@@ -68,20 +67,13 @@ public class JDBCECGManager implements ECGManager {
             if (rs.next()) {
                 String observations = rs.getString("observation");
                 int patient_id = rs.getInt("patientId");
-                byte[] bytes = rs.getBytes("ecg");
+                String ecgList = rs.getString("ecg");
                 String date = rs.getString("date");
-                ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                ObjectInputStream ois = new ObjectInputStream(bis);
-                ArrayList<Integer> ecgList = (ArrayList<Integer>) ois.readObject();
                 ecg = new ECG(id, observations, patient_id, date, ecgList);
             }
             rs.close();
             prep.close();
         } catch (SQLException ex) {
-            Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
             Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ecg;
@@ -98,21 +90,14 @@ public class JDBCECGManager implements ECGManager {
             if (rs.next()) {
                 String observations = rs.getString("observation");
                 int id = rs.getInt("id");
-                byte[] bytes = rs.getBytes("ecg");
+                String ecgList = rs.getString("ecg");
                 String date = rs.getString("date");
-                ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                ObjectInputStream ois = new ObjectInputStream(bis);
-                ArrayList<Integer> ecgList = (ArrayList<Integer>) ois.readObject();
                 ECG ecg = new ECG(id, observations, patient_id, date, ecgList);
                 ecgs.add(ecg);
             }
             rs.close();
             prep.close();
         } catch (SQLException ex) {
-            Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
             Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ecgs;
@@ -130,20 +115,13 @@ public class JDBCECGManager implements ECGManager {
                 String observations = rs.getString("observation");
                 int id = rs.getInt("id");
                 int patient_id = rs.getInt("patientId");
-                byte[] bytes = rs.getBytes("ecg");
-                ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-                ObjectInputStream ois = new ObjectInputStream(bis);
-                ArrayList<Integer> ecgList = (ArrayList<Integer>) ois.readObject();
+                String ecgList = rs.getString("ecg");
                 ECG ecg = new ECG(id, ecgList, observations, patient_id);
                 ecgs.add(ecg);
             }
             rs.close();
             prep.close();
         } catch (SQLException ex) {
-            Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
             Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ecgs;

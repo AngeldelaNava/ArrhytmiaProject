@@ -107,9 +107,14 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
         bitalinoDemo.recordSignal(macAddress); //COGEMOS MAC ADDRESS DEL PACIENTE
 
         ArrayList<Integer> ecg_lista = bitalinoDemo.getList();
+        String ecg_list = "";
+        for (int i = 0; i < ecg_lista.size(); i++) {
+            String newValue = ", " + String.valueOf(ecg_lista.get(i));
+            ecg_list += newValue;
+        }
 
         if (!ecg_lista.isEmpty()) {
-            ecg = new ECG(ecg_lista, patient.getId(), date);
+            ecg = new ECG(ecg_list, patient.getId(), date);
             try {
                 socket.getOutputStream().write(0);
             } catch (IOException ex) {

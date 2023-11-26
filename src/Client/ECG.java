@@ -4,8 +4,6 @@
  */
 package Client;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author maria
@@ -13,12 +11,12 @@ import java.util.ArrayList;
 public class ECG {
 
     private Integer id;
-    private ArrayList<Integer> ecg;
+    private String ecg;
     private String observations;
     private int patient_id;
     private String date;
 
-    public ECG(Integer id, String observations, int patient_id, String date, ArrayList<Integer> ecg) {
+    public ECG(Integer id, String observations, int patient_id, String date, String ecg) {
         this.id = id;
         this.observations = observations;
         this.patient_id = patient_id;
@@ -26,19 +24,19 @@ public class ECG {
         this.ecg = ecg;
     }
 
-    public ECG(ArrayList<Integer> ecg, String observations, int patient_id) {
+    public ECG(String ecg, String observations, int patient_id) {
         this.ecg = ecg;
         this.observations = observations;
         this.patient_id = patient_id;
     }
 
-    public ECG(ArrayList<Integer> ecg, int patient_id, String date) {
+    public ECG(String ecg, int patient_id, String date) {
         this.ecg = ecg;
         this.patient_id = patient_id;
         this.date = date;
     }
 
-    public ECG(Integer id, ArrayList<Integer> ecg, String observations, int patient_id) {
+    public ECG(Integer id, String ecg, String observations, int patient_id) {
         this.id = id;
         this.ecg = ecg;
         this.observations = observations;
@@ -51,7 +49,7 @@ public class ECG {
         this.patient_id = patient_id;
     }
 
-    public ArrayList<Integer> getEcg() {
+    public String getEcg() {
         return ecg;
     }
 
@@ -63,7 +61,7 @@ public class ECG {
         return patient_id;
     }
 
-    public void setEcg(ArrayList<Integer> ecg) {
+    public void setEcg(String ecg) {
         this.ecg = ecg;
     }
 

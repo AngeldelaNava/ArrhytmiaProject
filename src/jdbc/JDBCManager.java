@@ -69,7 +69,7 @@ public class JDBCManager implements Manager {
                     + " name  TEXT   NOT NULL, " + " lastname  TEXT   NOT NULL, " + " email   TEXT NOT NULL, "
                     + " username  TEXT   NOT NULL, " + " password  BLOB   NOT NULL, " + " gender TEXT CHECK (gender = 'M' OR gender = 'F')), "
                     + "CREATE TABLE IF NOT EXISTS ECG " + "(id     INTEGER  PRIMARY KEY AUTOINCREMENT, "
-                    + " observation TEXT NOT NULL, " + " ecg BLOB NOT NULL, date TEXT NOT NULL"
+                    + " observation TEXT NOT NULL, " + " ecg TEXT NOT NULL, date TEXT NOT NULL"
                     + "patientId INTEGER REFERENCES Patient(id) ON UPDATE CASCADE ON DELETE CASCADE)";
             stmt.executeUpdate(sq1);
             stmt.close();
