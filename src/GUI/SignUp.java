@@ -10,6 +10,7 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
 
@@ -290,7 +291,11 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new RecordECG().setVisible(true);  //se abre la ventana de record
+                JFrame frame = new JFrame();
+                frame.add(new SignUp());
+                frame.pack();
+                frame.setVisible(true); //se abre la ventana de record
+                //new RecordECG().setVisible(true);  //se abre la ventana de record
             }
         });
     }
@@ -352,7 +357,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
     }//GEN-LAST:event_SignUpActionPerformed
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        manager.disconnect();
+        //manager.disconnect();
         System.exit(0);
     }//GEN-LAST:event_ExitActionPerformed
 

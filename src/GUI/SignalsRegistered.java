@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import jdbc.JDBCECGManager;
 import jdbc.JDBCManager;
@@ -213,7 +214,10 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new RecordECG().setVisible(true);  //se abre la ventana de record
+                JFrame frame = new JFrame();
+                frame.add(new SignalsRegistered());
+                frame.pack();
+                frame.setVisible(true); //se abre la ventana de record
             }
         });
     }
@@ -238,7 +242,7 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
     }//GEN-LAST:event_ViewButtonActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
-        manager.disconnect();
+        //manager.disconnect();
         System.exit(0);
     }//GEN-LAST:event_ExitButtonActionPerformed
 

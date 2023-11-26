@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import jdbc.JDBCManager;
 
 /**
@@ -45,6 +46,7 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
     }
 
     public MenuGUI() {
+        initComponents();
         addWindowListener(this);
     }
 
@@ -167,7 +169,11 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MenuGUI().setVisible(true);
+                JFrame frame = new JFrame();
+                MenuGUI menuGUI = new MenuGUI();
+                frame.add(menuGUI);
+                frame.pack();
+                frame.setVisible(true);
 
             }
         });

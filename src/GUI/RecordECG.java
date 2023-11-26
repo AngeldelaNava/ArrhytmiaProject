@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -161,7 +162,10 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new RecordECG().setVisible(true);  //se abre la ventana de record
+                JFrame frame = new JFrame();
+                frame.add(new RecordECG());
+                frame.pack();
+                frame.setVisible(true); //se abre la ventana de record
             }
         });
     }

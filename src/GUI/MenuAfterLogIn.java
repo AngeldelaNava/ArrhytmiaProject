@@ -167,7 +167,7 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new RecordECG().setVisible(true);  //se abre la ventana de record
+                new MenuAfterLogIn().setVisible(true);  //se abre la ventana de record
             }
         });
     }
@@ -201,7 +201,7 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
     }//GEN-LAST:event_RecordECGActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed
-        this.jdbcmanager.disconnect();
+        //this.jdbcmanager.disconnect();
         System.exit(0);
     }//GEN-LAST:event_ExitButtonActionPerformed
 

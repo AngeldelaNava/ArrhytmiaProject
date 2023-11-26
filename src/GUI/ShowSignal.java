@@ -296,7 +296,7 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
     }//GEN-LAST:event_GoBackButtonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        manager.disconnect();
+        //manager.disconnect();
         System.exit(0);
     }//GEN-LAST:event_jButton3ActionPerformed
 

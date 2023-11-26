@@ -5,11 +5,13 @@
 package GUI;
 
 import Client.SocketObject;
+import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
 
@@ -34,13 +36,14 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
      */
     public LogIn() {
         initComponents();
+        addWindowListener(this);
     }
 
     public LogIn(SocketObject socket, JDBCManager manager) {
         this.socket = socket;
         this.manager = manager;
         initComponents();
-
+        addWindowListener(this);
     }
 
     public void setLogin(LogIn login) {
@@ -209,13 +212,16 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new RecordECG().setVisible(true);  //se abre la ventana de record
+                JFrame frame = new JFrame();
+                frame.add(new LogIn());
+                frame.pack();
+                frame.setVisible(true);  //se abre la ventana de record
             }
         });
     }
 
     private void ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitActionPerformed
-        manager.disconnect();
+        //manager.disconnect();
         System.exit(0);
     }//GEN-LAST:event_ExitActionPerformed
 
