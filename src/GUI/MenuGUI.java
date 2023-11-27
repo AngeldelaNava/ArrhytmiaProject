@@ -9,6 +9,11 @@ import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
@@ -21,7 +26,6 @@ import jdbc.JDBCManager;
  */
 public class MenuGUI extends javax.swing.JPanel implements WindowListener {
 
-    private Object bean;
     private SocketObject socket;
     private MenuGUI menu;
     private JDBCManager manager;
@@ -112,7 +116,7 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         signup = new SignUp(socket, manager);
         signup.setSignup(signup);
         signup.setVisible(true);
-        int option = 1;
+        int option = 1; //CASE 1 EN EL SERVERTHREADS
         try {
             socket.getOutputStream().write(option);
         } catch (IOException ex) {
@@ -126,7 +130,7 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         login = new LogIn(socket, manager);
         login.setLogin(login);
         login.setVisible(true);//se muestra ventana
-        int option = 2;
+        int option = 2; //ESTA OPCIÓN VA AL CASE 2 DE SERVERTHREADS 
         try {
             socket.getOutputStream().write(option);
         } catch (IOException ex) {
@@ -194,36 +198,60 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
 
     @Override
     public void windowOpened(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        releaseResources(socket.getObjectInputStream(), socket.getObjectOutputStream(), socket.getSocket(),
+                socket.getInputStream(), socket.getOutputStream());
+    }
+    
+    private static void releaseResources(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Socket socket,
+            InputStream inputStream, OutputStream outputStream) {
+        try {
+            objectInputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            objectOutputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            outputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            inputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void windowClosed(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

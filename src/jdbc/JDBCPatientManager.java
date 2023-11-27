@@ -70,7 +70,6 @@ public class JDBCPatientManager implements PatientManager {
                 String lastname = rs.getString("lastname");
                 String gender = rs.getString("gender");
                 String email = rs.getString("email");
-                String MAC = rs.getString("MAC");
                 p = new Patient(id, name, lastname, gender, email, username, password);
             }
             rs.close();
@@ -112,7 +111,7 @@ public class JDBCPatientManager implements PatientManager {
         boolean contrasenaCorrecta = false; // Se inicializa como false
 
         // Consulta SQL para verificar la contraseña
-        String sql = "SELECT contraseña FROM patient WHERE username = ?";
+        String sql = "SELECT password FROM patient WHERE username = ?";
 
         try {
             // Preparar la consulta

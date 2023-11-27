@@ -10,6 +10,7 @@ import ifaces.ECGManager;
 import ifaces.Manager;
 import ifaces.PatientManager;
 import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -51,6 +52,8 @@ public class ServerThreads implements Runnable{
             ECG ecg;
             ArrayList<ECG> ecgs = null;
             ArrayList<Patient> ps = null;
+            String username;
+            boolean usernameExists;
             inputStream=socket.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             objectInputStream = new ObjectInputStream(inputStream);     //se inicializa la variable object inputstream al inputstrema (para poder leer objetos)
@@ -59,10 +62,38 @@ public class ServerThreads implements Runnable{
             int option = inputStream.read();
             switch(option){
                 case 1: //se abre menu GUI (sign up)
-                    String usernameSignUp = bufferedReader.readLine();
-                    boolean usernameExists = patientManager.verifyUsername(usernameSignUp);
+                    username = bufferedReader.readLine();
+                    usernameExists = patientManager.verifyUsername(username);
                     objectOutputStream.writeObject(usernameExists);
-                    
+                    if (usernameExists){
+                        try {
+                            p = (Patient) (objectInputStream.readObject());
+                            patientManager.addPatient(p);
+                            String resultString = new String(p.getPassword());
+                            p = patientManager.searchPatient(p.getUsername(), resultString);
+                            objectOutputStream.writeObject(p);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case 2: //LOG IN
+                    username = bufferedReader.readLine();
+                    usernameExists = patientManager.verifyUsername(username);
+                    objectOutputStream.writeObject(usernameExists);
+                    if(usernameExists){
+                        String password = bufferedReader.readLine();
+                        boolean correct = patientManager.verifyPassword(username, password);
+                        objectOutputStream.writeObject(correct);
+                        if(correct){
+                            try{
+                                p = patientManager.searchPatient(username, password);
+                                objectOutputStream.writeObject(p);
+                            }catch (EOFException ex) {
+                                Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);                            
+                            }
+                        }
+                    }break;
             }
         } catch (IOException ex) {
             Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);

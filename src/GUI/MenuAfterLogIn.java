@@ -11,6 +11,7 @@ import Client.SocketObject;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -50,6 +51,15 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
     public MenuAfterLogIn() {
         initComponents();
     }
+    public MenuAfterLogIn(SocketObject socket) {
+        this.socket = socket;
+        initComponents();
+    }
+    public void setPatient(Patient p) {
+        this.patient = p;
+        initComponents();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

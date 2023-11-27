@@ -4,14 +4,22 @@
  */
 package GUI;
 
+import Client.Patient;
 import Client.SocketObject;
 import static com.sun.java.accessibility.util.AWTEventMonitor.addWindowListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
 
@@ -239,25 +247,40 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
     }//GEN-LAST:event_jPasswordActionPerformed
 
     private void LogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogInActionPerformed
-        patientManager = new JDBCPatientManager(manager);
-        boolean passwordCheck = patientManager.verifyPassword(username, password);
-        if (passwordCheck) {//if the password is correct
-            menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
-            menuAfter.setMenuAfterLogIn(menuAfter);
-            menuAfter.setVisible(true);
-            int option = 1;
-            try {
-                socket.getOutputStream().write(option);
-            } catch (IOException ex) {
-                Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            Patient p = new Patient();
+            PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
+            patientManager = new JDBCPatientManager(manager);
+            String username = jUsername.getText();
+            String password = new String (jPassword.getPassword());
+            printWriter.println(username);
+            //VER SI EXISTE USERNAME
+            boolean usernameExists = (boolean) socket.getObjectInputStream().readObject();
+            if(usernameExists == false){//SI NO EXISTE USERNAME
+                JOptionPane.showMessageDialog(null, "Wrong username");
+                socket.getOutputStream().write(2);//EN SERVERTHREADS SE IRA A LA OPCION 2 DENTRO DE SU CASE
+            }else{//SI EXISTE USERNAME
+                printWriter.println(username);
+                printWriter.println(password);
+                boolean correct = (boolean) socket.getObjectInputStream().readObject();
+                if (correct){ //SI COINCIDE USERNAME Y CONTRASEÑA
+                    p.setUsername(username);
+                    //p.setPassword(password);
+                    menuAfter =new MenuAfterLogIn(socket);
+                    menuAfter.setMenuAfterLogIn(menuAfter);
+                    socket.getOutputStream().write(0); //SE ENVIA 0 AL SERVERTHREADS DEL CASE LOG IN PARA SABER QUE TODO ESTA CORRECTO
+                    printWriter.println(p.getUsername());
+                    printWriter.println(p.getPassword());
+                    Patient patient = (Patient) (socket.getObjectInputStream().readObject());
+                    menuAfter.setPatient(patient);
+                    menuAfter.setVisible(true);
+                    this.login.setVisible(false);
+                }
             }
-            this.login.setVisible(false);//for closing the current window
-        } else {
-            try {
-                throw new Exception("Incorrect username or password");
-            } catch (Exception ex) {
-                Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } catch (IOException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_LogInActionPerformed
 
@@ -278,8 +301,10 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        releaseResources(socket.getObjectInputStream(), socket.getObjectOutputStream(), socket.getSocket(),
+                socket.getInputStream(), socket.getOutputStream());
     }
+
 
     @Override
     public void windowClosed(WindowEvent e) {
@@ -304,5 +329,33 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
     @Override
     public void windowDeactivated(WindowEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+     private static void releaseResources(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Socket socket,
+            InputStream inputStream, OutputStream outputStream) {
+        try {
+            objectInputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            objectOutputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            outputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            inputStream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
