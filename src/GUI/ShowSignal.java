@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import jdbc.JDBCECGManager;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
@@ -40,6 +41,7 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
     private SignalsRegistered signalsRegistered;
     private ECG ecg;
     private ShowSignal showSignal;
+    private JFrame frame;
 
     public ShowSignal(JDBCManager manager, JDBCPatientManager patientManager, JDBCECGManager ecgManager, SocketObject socket, Patient patient, SignalsRegistered signalsRegistered, ECG ecg) {
         this.manager = manager;
@@ -75,6 +77,14 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
     /**
      * Creates new form ShowSignal
      */
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+    }
+
     public ShowSignal() {
         initComponents();
     }
@@ -329,6 +339,7 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ShowSignal().setVisible(true);
             }

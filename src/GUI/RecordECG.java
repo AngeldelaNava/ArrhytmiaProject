@@ -30,6 +30,7 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
     private SocketObject socket;
     private Patient patient;
     private RecordECG record;
+    private JFrame frame;
     //habria que guardar la señal de alguna forma
 
     /**
@@ -43,6 +44,21 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
         this.socket = socket;
         this.patient = patient;
         initComponents();
+    }
+
+    public RecordECG(SocketObject socket, Patient patient, MenuAfterLogIn menu) {
+        this.socket = socket;
+        this.patient = patient;
+        this.menu = menu;
+        initComponents();
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
     public void setRecord(RecordECG record) {
@@ -122,7 +138,13 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
                 System.out.println("Can't establish a connection");
                 Logger.getLogger(RecordECG.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.record.setVisible(false);
+
+            menu.setFrame(frame);
+            menu.getFrame().add(menu);
+            menu.getFrame().pack();
+            menu.getFrame().setVisible(true);
+            frame.setVisible(false);
+            //this.record.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "The bitalino is not connected properly. "
                     + "Check connection.");
@@ -162,10 +184,12 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
-                frame.add(new RecordECG());
-                frame.pack();
-                frame.setVisible(true); //se abre la ventana de record
+                //JFrame frame = new JFrame();
+                RecordECG recordECG = new RecordECG();
+                recordECG.setFrame(new JFrame());
+                recordECG.frame.add(recordECG);
+                recordECG.frame.pack();
+                recordECG.frame.setVisible(true); //se abre la ventana de record
             }
         });
     }

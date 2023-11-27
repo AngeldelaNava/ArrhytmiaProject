@@ -37,6 +37,7 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
     private String password;
     private JDBCPatientManager patientManager;
     private JDBCManager manager;
+    private JFrame frame;
     public MenuAfterLogIn menuAfter;
 
     /**
@@ -52,6 +53,14 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         this.manager = manager;
         initComponents();
         addWindowListener(this);
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
     public void setLogin(LogIn login) {
@@ -220,10 +229,12 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
-                frame.add(new LogIn());
-                frame.pack();
-                frame.setVisible(true);  //se abre la ventana de record
+                //JFrame frame = new JFrame();
+                LogIn logIn = new LogIn();
+                logIn.setFrame(new JFrame());
+                logIn.frame.add(logIn);
+                logIn.frame.pack();
+                logIn.frame.setVisible(true);  //se abre la ventana de record
             }
         });
     }
@@ -276,14 +287,13 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
                     menuAfter.setVisible(true);
                     this.login.setVisible(false);
                 }
-            }
+    }//GEN-LAST:event_LogInActionPerformed
         } catch (IOException ex) {
             Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_LogInActionPerformed
-
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Exit;
     private javax.swing.JButton LogIn;

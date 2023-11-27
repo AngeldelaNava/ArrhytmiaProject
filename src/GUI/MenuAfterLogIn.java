@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import jdbc.JDBCECGManager;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
@@ -34,11 +35,20 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
     private RecordECG record;
     private Patient patient;
     private SignalsRegistered signalsregistered;
+    private JFrame frame;
 
     public MenuAfterLogIn(SocketObject socket, JDBCManager jdbcmanager, JDBCPatientManager jdbcpatientmanager) {
         this.socket = socket;
         this.jdbcmanager = jdbcmanager;
         this.jdbcpatientmanager = jdbcpatientmanager;
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
     public void setMenuAfterLogIn(MenuAfterLogIn menuAfterLogIn) {
@@ -186,8 +196,12 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
         JDBCECGManager ecgManager = new JDBCECGManager(jdbcmanager);
         ArrayList<ECG> ecgs = ecgManager.findECGByPatient(patient.getId()); //creamos arraylist
         signalsregistered = new SignalsRegistered(jdbcmanager, jdbcpatientmanager, ecgManager, socket, ecgs, patient);
+        signalsregistered.setFrame(frame);
         signalsregistered.setSignalsRegistered(signalsregistered);
-        signalsregistered.setVisible(true);
+        signalsregistered.getFrame().add(signalsregistered);
+        signalsregistered.getFrame().pack();
+        signalsregistered.getFrame().setVisible(true);
+        //signalsregistered.setVisible(true);
         int option = 1; //opcion 2 en DESIGN es
         try {
             socket.getOutputStream().write(option);
@@ -198,9 +212,13 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
     }//GEN-LAST:event_ViewMyDataActionPerformed
 
     private void RecordECGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecordECGActionPerformed
-        record = new RecordECG(socket, patient);
+        record = new RecordECG(socket, patient, menuAfterLogIn);
+        record.setFrame(frame);
         record.setRecord(record);
-        record.setVisible(true); //abrimos ventana
+        record.getFrame().add(record);
+        record.getFrame().pack();
+        record.getFrame().setVisible(true);
+        //record.setVisible(true); //abrimos ventana
         int option = 2; //opción 2 que es grabar la señal en DESIGN
         try {
             socket.getOutputStream().write(option);
