@@ -34,6 +34,7 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
     private Patient patient;
     private SignalsRegistered signalsRegistered;
     private ShowSignal showSignal;
+    private JFrame frame;
     int signalId;
 
     public SignalsRegistered(JDBCManager manager, JDBCPatientManager patientManager, JDBCECGManager ecgManager, SocketObject socket, ArrayList<ECG> ecgs, Patient patient) {
@@ -59,6 +60,14 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
      */
     public SignalsRegistered() {
         initComponents();
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
     public void setSignalId(int signalId) {
@@ -214,10 +223,12 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
-                frame.add(new SignalsRegistered());
-                frame.pack();
-                frame.setVisible(true); //se abre la ventana de record
+                //JFrame frame = new JFrame();
+                SignalsRegistered signalsRegistered = new SignalsRegistered();
+                signalsRegistered.setFrame(new JFrame());
+                signalsRegistered.frame.add(signalsRegistered);
+                signalsRegistered.frame.pack();
+                signalsRegistered.frame.setVisible(true); //se abre la ventana de record
             }
         });
     }
@@ -230,6 +241,7 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
         // TODO add your handling code here:
         ECG ecg = ecgManager.findECG(signalId);
         showSignal = new ShowSignal(manager, patientManager, ecgManager, socket, patient, signalsRegistered, ecg);
+        showSignal.setFrame(frame);
         showSignal.setShowSignal(showSignal);
         showSignal.setVisible(true);
         int option = 1;
@@ -238,7 +250,8 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        signalsRegistered.setVisible(false);
+        frame.setVisible(false);
+        //signalsRegistered.setVisible(false);
     }//GEN-LAST:event_ViewButtonActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed

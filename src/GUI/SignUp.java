@@ -31,6 +31,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
     private String password;
     private JDBCPatientManager patientManager;
     private JDBCManager manager;
+    private JFrame frame;
     private MenuAfterLogIn menuAfter;
 
     /**
@@ -44,6 +45,14 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         this.socket = socket;
         this.manager = manager;
         initComponents();
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
     public SignUp getSignup() {
@@ -291,11 +300,12 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
-                frame.add(new SignUp());
-                frame.pack();
-                frame.setVisible(true); //se abre la ventana de record
-                //new RecordECG().setVisible(true);  //se abre la ventana de record
+                //JFrame frame = new JFrame();
+                SignUp signUp = new SignUp();
+                signUp.setFrame(new JFrame());
+                signUp.frame.add(signUp);
+                signUp.frame.pack();
+                signUp.frame.setVisible(true); //se abre la ventana de record
             }
         });
     }
@@ -338,6 +348,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         boolean userCheck = patientManager.verifyUsername(username);
         if (!userCheck) {//if the username is correct(exists)
             menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
+            menuAfter.setFrame(frame);
             menuAfter.setMenuAfterLogIn(menuAfter);
             menuAfter.setVisible(true);
             int option = 1;
@@ -346,7 +357,8 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
             } catch (IOException ex) {
                 Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.signup.setVisible(false);//for closing the current window
+            frame.setVisible(false);
+            //this.signup.setVisible(false);//for closing the current window
         } else {//if the username does exist
             try {
                 throw new Exception("Incorrect username or password");

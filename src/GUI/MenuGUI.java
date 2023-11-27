@@ -27,6 +27,7 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
     private JDBCManager manager;
     public LogIn login;
     public SignUp signup;
+    private JFrame frame;
 
     public JButton getLoginbutton() {
         return LogInButton;
@@ -36,15 +37,24 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         return SignUpButton;
     }
 
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
+    }
+
     /**
      * Creates new customizer MenuGUI
+     *
      * @param socket
      * @param manager
      */
     public MenuGUI(SocketObject socket, JDBCManager manager) {
-        
+
         this.socket = socket;
-        this.manager= manager;
+        this.manager = manager;
         // lo añado porque sino sale que el manager es null en la línea 133 al hacer manager.conect()
         initComponents(); //inicia componentes gráficos de la ventana
         addWindowListener(this); //lo implementa la clase
@@ -110,29 +120,38 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
     private void SignUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpButtonActionPerformed
         manager.connect();
         signup = new SignUp(socket, manager);
+        signup.setFrame(frame);
         signup.setSignup(signup);
-        signup.setVisible(true);
+        signup.getFrame().add(login);
+        signup.getFrame().pack();
+        signup.getFrame().setVisible(true);
+        //signup.setVisible(true);
         int option = 1;
         try {
             socket.getOutputStream().write(option);
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.menu.setVisible(false);
+        frame.setVisible(false);
+        //this.menu.setVisible(false);
     }//GEN-LAST:event_SignUpButtonActionPerformed
 
     private void LogInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogInButtonActionPerformed
         manager.connect();
         login = new LogIn(socket, manager);
+        login.setFrame(frame);
         login.setLogin(login);
-        login.setVisible(true);//se muestra ventana
+        login.getFrame().add(login);
+        login.getFrame().pack();
+        login.getFrame().setVisible(true);
+        //login.setVisible(true);//se muestra ventana
         int option = 2;
         try {
             socket.getOutputStream().write(option);
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.menu.setVisible(false);//  se oculta ventana actual
+        frame.setVisible(false);//  se oculta ventana actual
     }//GEN-LAST:event_LogInButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -174,11 +193,12 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
+                //JFrame frame = new JFrame();
                 MenuGUI menuGUI = new MenuGUI();
-                frame.add(menuGUI);
-                frame.pack();
-                frame.setVisible(true);
+                menuGUI.setFrame(new JFrame());
+                menuGUI.frame.add(menuGUI);
+                menuGUI.frame.pack();
+                menuGUI.frame.setVisible(true);
 
             }
         });

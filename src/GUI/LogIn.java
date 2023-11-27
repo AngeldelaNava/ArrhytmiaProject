@@ -29,6 +29,7 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
     private String password;
     private JDBCPatientManager patientManager;
     private JDBCManager manager;
+    private JFrame frame;
     public MenuAfterLogIn menuAfter;
 
     /**
@@ -44,6 +45,14 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         this.manager = manager;
         initComponents();
         addWindowListener(this);
+    }
+
+    public JFrame getFrame() {
+        return frame;
+    }
+
+    public void setFrame(JFrame frame) {
+        this.frame = frame;
     }
 
     public void setLogin(LogIn login) {
@@ -212,10 +221,12 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
-                frame.add(new LogIn());
-                frame.pack();
-                frame.setVisible(true);  //se abre la ventana de record
+                //JFrame frame = new JFrame();
+                LogIn logIn = new LogIn();
+                logIn.setFrame(new JFrame());
+                logIn.frame.add(logIn);
+                logIn.frame.pack();
+                logIn.frame.setVisible(true);  //se abre la ventana de record
             }
         });
     }
@@ -243,6 +254,7 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         boolean passwordCheck = patientManager.verifyPassword(username, password);
         if (passwordCheck) {//if the password is correct
             menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
+            menuAfter.setFrame(frame);
             menuAfter.setMenuAfterLogIn(menuAfter);
             menuAfter.setVisible(true);
             int option = 1;
@@ -251,7 +263,8 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
             } catch (IOException ex) {
                 Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            this.login.setVisible(false);//for closing the current window
+            frame.setVisible(false);
+            //this.login.setVisible(false);//for closing the current window
         } else {
             try {
                 throw new Exception("Incorrect username or password");
