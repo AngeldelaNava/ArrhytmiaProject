@@ -16,6 +16,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -245,16 +247,11 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
     }//GEN-LAST:event_ExitActionPerformed
 
     private void jUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUsernameActionPerformed
-        setUsername(jUsername.getText());
+
     }//GEN-LAST:event_jUsernameActionPerformed
 
     private void jPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordActionPerformed
-        char[] arregloContraseña = jPassword.getPassword();
-        StringBuilder sb = new StringBuilder();
-        for (char c : arregloContraseña) {
-            sb.append(c);
-        }
-        setPassword(sb.toString());
+
     }//GEN-LAST:event_jPasswordActionPerformed
 
     private void LogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogInActionPerformed
@@ -262,22 +259,26 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
             Patient p = new Patient();
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             patientManager = new JDBCPatientManager(manager);
-            String username = jUsername.getText();
-            String password = new String (jPassword.getPassword());
+            username = jUsername.getText();
+            password = new String(jPassword.getPassword());
             printWriter.println(username);
             //VER SI EXISTE USERNAME
             boolean usernameExists = (boolean) socket.getObjectInputStream().readObject();
-            if(usernameExists == false){//SI NO EXISTE USERNAME
+            if (usernameExists == false) {//SI NO EXISTE USERNAME
                 JOptionPane.showMessageDialog(null, "Wrong username");
                 socket.getOutputStream().write(2);//EN SERVERTHREADS SE IRA A LA OPCION 2 DENTRO DE SU CASE
-            }else{//SI EXISTE USERNAME
+            } else {//SI EXISTE USERNAME
                 printWriter.println(username);
                 printWriter.println(password);
                 boolean correct = (boolean) socket.getObjectInputStream().readObject();
-                if (correct){ //SI COINCIDE USERNAME Y CONTRASEÑA
+                if (correct) { //SI COINCIDE USERNAME Y CONTRASEÑA
                     p.setUsername(username);
                     //p.setPassword(password);
-                    menuAfter =new MenuAfterLogIn(socket);
+                    MessageDigest md = MessageDigest.getInstance("MD5");
+                    md.update(password.getBytes());
+                    byte[] passwordBytes = md.digest();
+                    p.setPassword(passwordBytes);
+                    menuAfter = new MenuAfterLogIn(socket);
                     menuAfter.setMenuAfterLogIn(menuAfter);
                     socket.getOutputStream().write(0); //SE ENVIA 0 AL SERVERTHREADS DEL CASE LOG IN PARA SABER QUE TODO ESTA CORRECTO
                     printWriter.println(p.getUsername());
@@ -292,8 +293,10 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
             Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
         }
-}
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Exit;
     private javax.swing.JButton LogIn;
@@ -314,7 +317,6 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         releaseResources(socket.getObjectInputStream(), socket.getObjectOutputStream(), socket.getSocket(),
                 socket.getInputStream(), socket.getOutputStream());
     }
-
 
     @Override
     public void windowClosed(WindowEvent e) {
@@ -340,7 +342,8 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
     public void windowDeactivated(WindowEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-     private static void releaseResources(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Socket socket,
+
+    private static void releaseResources(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Socket socket,
             InputStream inputStream, OutputStream outputStream) {
         try {
             objectInputStream.close();
