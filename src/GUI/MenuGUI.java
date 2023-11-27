@@ -38,9 +38,14 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
 
     /**
      * Creates new customizer MenuGUI
+     * @param socket
+     * @param manager
      */
-    public MenuGUI(SocketObject socket) {
+    public MenuGUI(SocketObject socket, JDBCManager manager) {
+        
         this.socket = socket;
+        this.manager= manager;
+        // lo añado porque sino sale que el manager es null en la línea 133 al hacer manager.conect()
         initComponents(); //inicia componentes gráficos de la ventana
         addWindowListener(this); //lo implementa la clase
     }
