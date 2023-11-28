@@ -53,7 +53,7 @@ public class Server {
                 //ClientHandler clientHandler = new ClientHandler(clientSocket, this);
                 //clients.add(clientHandler);
                 //new Thread(clientHandler).start();
-                new Thread(new ServerThreads(socket, manager)).start();
+                new Thread(new ServerThreads(clientSocket, manager)).start();
             }
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);

@@ -21,7 +21,7 @@ import jdbc.JDBCManager;
  */
 public class menu {
 
-    private static MenuGUI menu;
+    private static MenuGUI menuInstance;
 
     public static void main(String[] args) throws Exception { //establece conexión con el servidor a través del socket
         SocketObject socket;
@@ -44,13 +44,13 @@ public class menu {
             Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);//se registra la excepcion
         }
         //
-        menu = new MenuGUI(socket, manager);
+        menuInstance = new MenuGUI(socket, manager);
         JFrame frame = new JFrame();
-        menu.setFrame(frame);
-        menu.setMenu(menu); //se asigna la instancia
-        menu.getFrame().add(menu);
-        menu.getFrame().pack();
-        menu.getFrame().setVisible(true); // se abre GUI
-        //menu.setVisible(true); //se abre GUI
+        menuInstance.setFrame(frame);
+        menuInstance.setMenu(menuInstance); //se asigna la instancia
+        menuInstance.getFrame().add(menuInstance);
+        menuInstance.getFrame().pack();
+        menuInstance.getFrame().setVisible(true); // se abre GUI
+        menuInstance.setVisible(true); //se abre GUI
     }
 }

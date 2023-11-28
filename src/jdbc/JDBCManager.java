@@ -42,7 +42,7 @@ public class JDBCManager implements Manager {
         try {
             Class.forName("org.sqlite.JDBC");
             //here we get the connection
-            this.c = DriverManager.getConnection("jdbc:sqlite:jdbc:sqlite:./db/ArrhythmiaProject.db");
+            this.c = DriverManager.getConnection("jdbc:sqlite:./db/ArrhythmiaProject.db");
             c.createStatement().execute("PRAGMA foreign_keys=ON");
             patient = new JDBCPatientManager(c);
             ecg = new JDBCECGManager(c);
