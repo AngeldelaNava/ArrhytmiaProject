@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import jdbc.JDBCManager;
 
 /**
@@ -19,13 +20,15 @@ import jdbc.JDBCManager;
  * @author maria
  */
 public class menu {
+
     private static MenuGUI menu;
+
     public static void main(String[] args) throws Exception { //establece conexión con el servidor a través del socket
         SocketObject socket;
         socket = new SocketObject();
         JDBCManager manager;
         manager = new JDBCManager();
-        
+
         try {
             socket.setSocket(new Socket("localhost", 9000));
             //OutputStream y ObjectOutputStream es para que el cliente envíe datos y objetos
@@ -42,7 +45,12 @@ public class menu {
         }
         //
         menu = new MenuGUI(socket, manager);
+        JFrame frame = new JFrame();
+        menu.setFrame(frame);
         menu.setMenu(menu); //se asigna la instancia
-        menu.setVisible(true); //se abre GUI
+        menu.getFrame().add(menu);
+        menu.getFrame().pack();
+        menu.getFrame().setVisible(true); // se abre GUI
+        //menu.setVisible(true); //se abre GUI
     }
 }
