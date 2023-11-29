@@ -139,11 +139,11 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
                 Logger.getLogger(RecordECG.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            menu.setFrame(frame);
+            menu.setFrame(new JFrame());
             menu.getFrame().add(menu);
             menu.getFrame().pack();
             menu.getFrame().setVisible(true);
-            frame.setVisible(false);
+            frame.dispose();
             //this.record.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(null, "The bitalino is not connected properly. "

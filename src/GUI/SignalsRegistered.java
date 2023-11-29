@@ -241,7 +241,7 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
         // TODO add your handling code here:
         ECG ecg = ecgManager.findECG(signalId);
         showSignal = new ShowSignal(manager, patientManager, ecgManager, socket, patient, signalsRegistered, ecg);
-        showSignal.setFrame(frame);
+        showSignal.setFrame(new JFrame());
         showSignal.setShowSignal(showSignal);
         showSignal.setVisible(true);
         int option = 1;
@@ -250,7 +250,7 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        frame.setVisible(false);
+        frame.dispose();
         //signalsRegistered.setVisible(false);
     }//GEN-LAST:event_ViewButtonActionPerformed
 

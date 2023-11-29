@@ -56,7 +56,7 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         initComponents();
         addWindowListener(this);
     }
-    
+
     public LogIn getLoginPanel() {
         return this;
     }
@@ -283,6 +283,7 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
                     byte[] passwordBytes = md.digest();
                     p.setPassword(passwordBytes);
                     menuAfter = new MenuAfterLogIn(socket);
+                    menuAfter.setFrame(new JFrame());
                     menuAfter.setMenuAfterLogIn(menuAfter);
                     socket.getOutputStream().write(0); //SE ENVIA 0 AL SERVERTHREADS DEL CASE LOG IN PARA SABER QUE TODO ESTA CORRECTO
                     printWriter.println(p.getUsername());
@@ -290,7 +291,8 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
                     Patient patient = (Patient) (socket.getObjectInputStream().readObject());
                     menuAfter.setPatient(patient);
                     menuAfter.setVisible(true);
-                    this.login.setVisible(false);
+                    frame.dispose();
+                    //this.login.setVisible(false);
                 }
     }//GEN-LAST:event_LogInActionPerformed
         } catch (IOException ex) {

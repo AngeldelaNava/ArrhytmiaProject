@@ -140,13 +140,13 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         signup = new SignUp(socket, manager);
         //frame.setVisible(false);
         frame.dispose();
-        signup.setFrame(frame);
+        signup.setFrame(new JFrame());
         signup.setSignup(signup); // aqui estaba log in // //
         signup.getFrame().add(signup);
         signup.getFrame().pack();
         signup.getFrame().setVisible(true);
         //signup.setVisible(true);
-
+        frame.dispose();
         try {
             socket.getOutputStream().write(1); //CASE 1
         } catch (IOException ex) {
@@ -164,11 +164,12 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         login = new LogIn(socket, manager);
         //frame.setVisible(false);//  se oculta ventana actual
         frame.dispose();
-        login.setFrame(frame);
+        login.setFrame(new JFrame());
         login.setLogin(login);
         login.getFrame().add(login);
         login.getFrame().pack();
         login.getFrame().setVisible(true);
+        frame.dispose();
         //login.setVisible(true);//se muestra ventana
 
         try {

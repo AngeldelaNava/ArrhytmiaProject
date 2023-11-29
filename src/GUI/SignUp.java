@@ -352,7 +352,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         boolean userCheck = patientManager.verifyUsername(username);
         if (!userCheck) {//if the username is correct(exists)
             menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
-            menuAfter.setFrame(frame);
+            menuAfter.setFrame(new JFrame());
             menuAfter.setMenuAfterLogIn(menuAfter);
             menuAfter.setVisible(true);
             int option = 1;
@@ -361,7 +361,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
             } catch (IOException ex) {
                 Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
-            frame.setVisible(false);
+            frame.dispose();
             //this.signup.setVisible(false);//for closing the current window
         } else {//if the username does exist
             try {
