@@ -51,6 +51,10 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         return frame;
     }
 
+    public SignUp getSignUpPanel() {
+        return this;
+    }
+
     public void setFrame(JFrame frame) {
         this.frame = frame;
     }

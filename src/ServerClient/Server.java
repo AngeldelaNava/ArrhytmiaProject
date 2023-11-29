@@ -4,38 +4,36 @@
  * and open the template in the editor.
  */
 package ServerClient;
-import static ServerClient.ServerThreads.socket;
+
 import ifaces.Manager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import jdbc.JDBCManager;
+
 /**
  *
  * @author beatr
  */
-
 public class Server {
 
-    private static final int PORT = 9000;
+    private static final int PORT = 10000;
     //private List<ClientHandler> clients = new ArrayList<>();
     private static Manager manager;
 
     public static void main(String[] args) {
-        ServerSocket serverSocket; 
-        Socket socket = null;    
-        InputStream inputStream;  
+        ServerSocket serverSocket;
+        Socket socket = null;
+        InputStream inputStream;
         manager = new JDBCManager();
-        manager.connect(); 
-        manager.createTables();  
-        try { 
-            serverSocket = new ServerSocket(9000);
-        new Server().startServer(serverSocket);
+        manager.connect();
+        //manager.createTables();
+        try {
+            serverSocket = new ServerSocket(10000);
+            new Server().startServer(serverSocket);
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -61,8 +59,8 @@ public class Server {
             releaseResources(serverSocket);
         }
     }
-    
-    private static void releaseResources(ServerSocket serverSocket) { 
+
+    private static void releaseResources(ServerSocket serverSocket) {
         try {
             serverSocket.close();
         } catch (IOException ex) {

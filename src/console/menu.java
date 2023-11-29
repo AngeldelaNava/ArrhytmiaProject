@@ -30,7 +30,8 @@ public class menu {
         manager = new JDBCManager();
 
         try {
-            socket.setSocket(new Socket("localhost", 9000));
+            Socket s = new Socket("localhost", 10000);
+            socket.setSocket(s);
             //OutputStream y ObjectOutputStream es para que el cliente envíe datos y objetos
             //InputStream y ObjectInputStream es para que el cliente reciba datos y objetos
             //con el getOutputStream o getInputStream cogemos channels

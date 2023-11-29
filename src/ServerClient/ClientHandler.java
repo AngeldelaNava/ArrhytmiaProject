@@ -4,18 +4,12 @@
  * and open the template in the editor.
  */
 package ServerClient;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import ServerClient.Client;
 
 /**
  *
  * @author beatr
  */
-
-public class ClientHandler{
+public class ClientHandler { // CLASE QUE SE PUEDE BORRAR******************
 
     /*private Socket clientSocket;
     private Server server;
@@ -46,7 +40,7 @@ public class ClientHandler{
             server.removeClient(this);
         }
     }
-    
+
     // Send a message to this client
     public void sendMessage(String message) {
         try {
