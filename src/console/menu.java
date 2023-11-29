@@ -38,10 +38,11 @@ public class menu {
             socket.setObjectOutputStream(new ObjectOutputStream(socket.getOutputStream()));
             socket.setInputStream(socket.getSocket().getInputStream());
             socket.setObjectInputStream(new ObjectInputStream(socket.getInputStream()));
+            socket.getOutputStream().write(1);
         } catch (IOException ex) {
             System.out.println("Error in connection");//se imprime mensaje de error
-            System.exit(-1);//se sale del programa con un codigo de error
             Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);//se registra la excepcion
+            System.exit(-1);//se sale del programa con un codigo de error
         }
         //
         menuInstance = new MenuGUI(socket, manager);

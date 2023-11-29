@@ -130,9 +130,8 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         signup.getFrame().pack();
         signup.getFrame().setVisible(true);
         //signup.setVisible(true);
-        int option = 1;
         try {
-            socket.getOutputStream().write(option);
+            socket.getOutputStream().write(1); //CASE 1
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,17 +140,20 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
     }//GEN-LAST:event_SignUpButtonActionPerformed
 
     private void LogInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogInButtonActionPerformed
+        if (manager == null) {
+        // Inicializa el objeto manager si es null
+        manager = new JDBCManager();
+        }
         manager.connect();
         login = new LogIn(socket, manager);
         login.setFrame(frame);
         login.setLogin(login);
-        login.getFrame().add(login);
+        login.getFrame().add(login.getLoginPanel());
         login.getFrame().pack();
         login.getFrame().setVisible(true);
         //login.setVisible(true);//se muestra ventana
-        int option = 2;
         try {
-            socket.getOutputStream().write(option);
+            socket.getOutputStream().write(2); //CASE 2
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }

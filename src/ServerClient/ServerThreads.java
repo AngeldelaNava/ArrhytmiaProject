@@ -54,12 +54,15 @@ public class ServerThreads implements Runnable{
             ArrayList<Patient> ps = null;
             String username;
             boolean usernameExists;
+            int variable;
             inputStream=socket.getInputStream();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             objectInputStream = new ObjectInputStream(inputStream);     //se inicializa la variable object inputstream al inputstrema (para poder leer objetos)
             outputStream = socket.getOutputStream();    //se inicializa la variable outputstream al socket (para poder escribir)
             objectOutputStream = new ObjectOutputStream(outputStream);
-            int option = inputStream.read();
+            int medicoOpaciente = inputStream.read();
+            if(medicoOpaciente == 1){ //CLIENTE
+            int option = inputStream.read(); //CLIENTE ESCOGE BOTÓN
             switch(option){
                 case 1: //se abre menu GUI (sign up)
                     username = bufferedReader.readLine();
@@ -86,6 +89,8 @@ public class ServerThreads implements Runnable{
                         boolean correct = patientManager.verifyPassword(username, password);
                         objectOutputStream.writeObject(correct);
                         if(correct){
+                            variable = inputStream.read(); //SI RECIBE UN 0 DE LA CLASE menu TODO CORRECTO
+                            if(variable==0){
                             try{
                                 p = patientManager.searchPatient(username, password);
                                 objectOutputStream.writeObject(p);
@@ -93,7 +98,9 @@ public class ServerThreads implements Runnable{
                                 Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);                            
                             }
                         }
+                        }
                     }break;
+            }
             }
         } catch (IOException ex) {
             Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);

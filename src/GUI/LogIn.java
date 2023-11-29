@@ -56,6 +56,10 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
         initComponents();
         addWindowListener(this);
     }
+    
+    public LogIn getLoginPanel() {
+        return this;
+    }
 
     public JFrame getFrame() {
         return frame;
