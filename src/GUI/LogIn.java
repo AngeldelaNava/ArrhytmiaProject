@@ -264,11 +264,12 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
             PrintWriter printWriter = new PrintWriter(socket.getOutputStream(), true);
             patientManager = new JDBCPatientManager(manager);
             username = jUsername.getText();
-            password = new String(jPassword.getPassword());
+            char[] passwordChars=jPassword.getPassword();
+            password = new String(passwordChars);
             printWriter.println(username);
             //VER SI EXISTE USERNAME
             boolean usernameExists = (boolean) socket.getObjectInputStream().readObject();
-            if (usernameExists == false) {//SI NO EXISTE USERNAME
+            if (!usernameExists) {//SI NO EXISTE USERNAME
                 JOptionPane.showMessageDialog(null, "Wrong username");
                 socket.getOutputStream().write(2);//EN SERVERTHREADS SE IRA A LA OPCION 2 DENTRO DE SU CASE
             } else {//SI EXISTE USERNAME
@@ -278,9 +279,11 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
                 if (correct) { //SI COINCIDE USERNAME Y CONTRASEÑA
                     p.setUsername(username);
                     //p.setPassword(password);
-                    MessageDigest md = MessageDigest.getInstance("MD5");
-                    md.update(password.getBytes());
-                    byte[] passwordBytes = md.digest();
+                    //MessageDigest md = MessageDigest.getInstance("MD5");
+                    //md.update(password.getBytes());
+                    //byte[] passwordBytes = md.digest();
+                    MessageDigest md = MessageDigest.getInstance("SHA-256");
+                    byte[] passwordBytes = md.digest(password.getBytes());
                     p.setPassword(passwordBytes);
                     menuAfter = new MenuAfterLogIn(socket);
                     menuAfter.setFrame(new JFrame());
@@ -315,7 +318,6 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
 
     @Override
     public void windowOpened(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -326,27 +328,22 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
 
     @Override
     public void windowClosed(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     private static void releaseResources(ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream, Socket socket,

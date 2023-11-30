@@ -10,6 +10,7 @@ import Client.Patient;
 import Client.SocketObject;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import jdbc.JDBCECGManager;
+import jdbc.JDBCManager;
 
 /**
  *
@@ -31,6 +34,8 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
     private Patient patient;
     private RecordECG record;
     private JFrame frame;
+    private BitalinoDemo bitalinoDemo;
+    private JDBCECGManager jdbcECGManager;
     //habria que guardar la señal de alguna forma
 
     /**
@@ -38,6 +43,8 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
      */
     public RecordECG() {
         initComponents();
+        this.bitalinoDemo = new BitalinoDemo();
+        this.jdbcECGManager = new JDBCECGManager(new JDBCManager());
     }
 
     public RecordECG(SocketObject socket, Patient patient) {
@@ -119,19 +126,16 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
         LocalDateTime current_time = LocalDateTime.now(); //fecha y hora tal cual se graba
         String date = (String) dtf.format(current_time); //cast a string
 
-        BitalinoDemo bitalinoDemo = new BitalinoDemo();
+        //BitalinoDemo bitalinoDemo = new BitalinoDemo();
         String macAddress = "98:D3:51:FD:9C:ED";
         bitalinoDemo.recordSignal(macAddress); //COGEMOS MAC ADDRESS DEL PACIENTE
 
-        ArrayList<Integer> ecg_lista = bitalinoDemo.getList();
-        String ecg_list = "";
-        for (int i = 0; i < ecg_lista.size(); i++) {
-            String newValue = ", " + String.valueOf(ecg_lista.get(i));
-            ecg_list += newValue;
-        }
-
-        if (!ecg_lista.isEmpty()) {
-            ecg = new ECG(ecg_list, patient.getId(), date);
+        //ArrayList<Integer> ecg_lista = bitalinoDemo.getList();
+        //String ecg_list = "";
+        String ecgData= bitalinoDemo.getSignalData();
+        if(!ecgData.isEmpty()){
+            saveInText(ecgData, date);
+            saveInDatabase(ecgData, date);
             try {
                 socket.getOutputStream().write(0);
             } catch (IOException ex) {
@@ -149,9 +153,32 @@ public class RecordECG extends javax.swing.JPanel implements WindowListener {
             JOptionPane.showMessageDialog(null, "The bitalino is not connected properly. "
                     + "Check connection.");
         }
-
+        /*for (int i = 0; i < ecg_lista.size(); i++) {
+            String newValue = ", " + String.valueOf(ecg_lista.get(i));
+            ecg_list += newValue;
+        }*/
     }//GEN-LAST:event_RecordingButtonActionPerformed
-
+    private void saveInText(String ecgData, String date){
+        try {
+            String fileName = "ECG_Data_" + date + ".txt";
+            FileWriter writer = new FileWriter(fileName);
+            writer.write(ecgData);
+            writer.close();
+            System.out.println("ECG Data saved to file: " + fileName);
+        } catch (IOException ex) {
+            Logger.getLogger(RecordECG.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    private void saveInDatabase(String ecgData, String date){
+        ecg = new ECG(ecgData, patient.getId(), date);
+        ecg.setEcg(ecgData);
+        ecg.setPatient_id(patient.getId()); // Puedes cambiar esto según tus necesidades
+        ecg.setDate(date);
+        jdbcECGManager.addECG(ecg);
+        System.out.println("ECG Data saved to database");
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
