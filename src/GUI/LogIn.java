@@ -293,7 +293,9 @@ public class LogIn extends javax.swing.JPanel implements WindowListener {
                     printWriter.println(p.getPassword());
                     Patient patient = (Patient) (socket.getObjectInputStream().readObject());
                     menuAfter.setPatient(patient);
-                    menuAfter.setVisible(true);
+                    menuAfter.getFrame().add(menuAfter);
+                    menuAfter.getFrame().pack();
+                    menuAfter.getFrame().setVisible(true);
                     frame.dispose();
                     //this.login.setVisible(false);
                 }

@@ -11,7 +11,6 @@ import Client.SocketObject;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -61,15 +60,16 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
     public MenuAfterLogIn() {
         initComponents();
     }
+
     public MenuAfterLogIn(SocketObject socket) {
         this.socket = socket;
         initComponents();
     }
+
     public void setPatient(Patient p) {
         this.patient = p;
         initComponents();
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -196,7 +196,7 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
         JDBCECGManager ecgManager = new JDBCECGManager(jdbcmanager);
         ArrayList<ECG> ecgs = ecgManager.findECGByPatient(patient.getId()); //creamos arraylist
         signalsregistered = new SignalsRegistered(jdbcmanager, jdbcpatientmanager, ecgManager, socket, ecgs, patient);
-        signalsregistered.setFrame(frame);
+        signalsregistered.setFrame(new JFrame());
         signalsregistered.setSignalsRegistered(signalsregistered);
         signalsregistered.getFrame().add(signalsregistered);
         signalsregistered.getFrame().pack();
@@ -208,12 +208,12 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.menuAfterLogIn.setVisible(false); //cerramos la ventana
+        frame.dispose(); //cerramos la ventana
     }//GEN-LAST:event_ViewMyDataActionPerformed
 
     private void RecordECGActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecordECGActionPerformed
         record = new RecordECG(socket, patient, menuAfterLogIn);
-        record.setFrame(frame);
+        record.setFrame(new JFrame());
         record.setRecord(record);
         record.getFrame().add(record);
         record.getFrame().pack();
@@ -225,7 +225,7 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }// TODO add your handling code here:
-        this.menuAfterLogIn.setVisible(false); //cerramos ventana
+        frame.dispose(); //cerramos ventana
     }//GEN-LAST:event_RecordECGActionPerformed
 
     private void ExitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExitButtonActionPerformed

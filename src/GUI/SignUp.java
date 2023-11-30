@@ -354,7 +354,9 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
             menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
             menuAfter.setFrame(new JFrame());
             menuAfter.setMenuAfterLogIn(menuAfter);
-            menuAfter.setVisible(true);
+            menuAfter.getFrame().add(menuAfter);
+            menuAfter.getFrame().pack();
+            menuAfter.getFrame().setVisible(true);
             int option = 1;
             try {
                 socket.getOutputStream().write(option);
