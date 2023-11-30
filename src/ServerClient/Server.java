@@ -30,7 +30,7 @@ public class Server {
         InputStream inputStream;
         manager = new JDBCManager();
         manager.connect();
-        //manager.createTables();
+        manager.createTables();
         try {
             serverSocket = new ServerSocket(10000);
             new Server().startServer(serverSocket);

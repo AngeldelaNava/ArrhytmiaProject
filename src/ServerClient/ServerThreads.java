@@ -107,3 +107,79 @@ public class ServerThreads implements Runnable{
         }
     }
 }
+/*import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.net.*;
+
+public class ServerThreads extends Thread implements Runnable{
+    private Socket clientSocket;
+    private static Manager manager;
+
+    public ServerThreads(Socket socket, Manager manager) {
+        this.clientSocket = socket;
+        this.manager = manager;
+    }
+
+    public void run() {
+        try {
+            // Obtener flujos de entrada/salida del cliente
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+            // Menú principal
+            out.println("Bienvenido al sistema. Por favor, elija una opción:");
+            out.println("1. Sign Up");
+            out.println("2. Log In");
+
+            // Leer la opción del cliente
+            String opcion = in.readLine();
+
+            switch (opcion) {
+                case "1":
+                    // Lógica para Sign Up
+                    out.println("Funcionalidad de Sign Up aún no implementada");
+                    break;
+
+                case "2":
+                    // Lógica para Log In
+                    out.println("¡Bienvenido de nuevo! Por favor, elija una opción:");
+                    out.println("3. Hacer record de ECG");
+                    out.println("4. Ver datos");
+
+                    // Leer la opción del cliente dentro de Log In
+                    String opcionLogIn = in.readLine();
+
+                    switch (opcionLogIn) {
+                        case "3":
+                            // Lógica para hacer record de ECG
+                            out.println("Haciendo record de ECG... (aún no implementado)");
+                            break;
+
+                        case "4":
+                            // Lógica para ver datos
+                            out.println("Viendo datos... (aún no implementado)");
+                            break;
+
+                        default:
+                            out.println("Opción inválida");
+                            break;
+                    }
+                    break;
+
+                default:
+                    out.println("Opción inválida");
+                    break;
+            }
+
+            // Cerrar flujos y sockets
+            in.close();
+            out.close();
+            clientSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}*/
+

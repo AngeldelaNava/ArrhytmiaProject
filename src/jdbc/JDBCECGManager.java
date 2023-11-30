@@ -37,16 +37,15 @@ public class JDBCECGManager implements ECGManager {
     @Override
     public void addECG(ECG ecg) {
         try {
-            String sql = "INSERT INTO ECG (observation, ecg, patientId, date) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO ECG (ecg, patientId, date) VALUES (?, ?, ?)";
             PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-            prep.setString(1, ecg.getObservations());
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(ecg.getEcg());
             byte[] bytes = bos.toByteArray();
-            prep.setBytes(2, bytes);//Revisar que esté bien
-            prep.setInt(3, ecg.getPatient_id());
-            prep.setString(4, ecg.getDate());
+            prep.setString(1, ecg.getEcg());//Revisar que esté bien
+            prep.setInt(2, ecg.getPatient_id());
+            prep.setString(3, ecg.getDate());
             prep.executeUpdate();
             prep.close();
         } catch (SQLException ex) {
@@ -65,11 +64,10 @@ public class JDBCECGManager implements ECGManager {
             prep.setInt(1, id);
             ResultSet rs = prep.executeQuery();
             if (rs.next()) {
-                String observations = rs.getString("observation");
                 int patient_id = rs.getInt("patientId");
                 String ecgList = rs.getString("ecg");
                 String date = rs.getString("date");
-                ecg = new ECG(id, observations, patient_id, date, ecgList);
+                ecg = new ECG(id, patient_id, date, ecgList);
             }
             rs.close();
             prep.close();
@@ -88,11 +86,10 @@ public class JDBCECGManager implements ECGManager {
             prep.setInt(1, patient_id);
             ResultSet rs = prep.executeQuery();
             if (rs.next()) {
-                String observations = rs.getString("observation");
                 int id = rs.getInt("id");
                 String ecgList = rs.getString("ecg");
                 String date = rs.getString("date");
-                ECG ecg = new ECG(id, observations, patient_id, date, ecgList);
+                ECG ecg = new ECG(id, patient_id, date, ecgList);
                 ecgs.add(ecg);
             }
             rs.close();
@@ -116,7 +113,7 @@ public class JDBCECGManager implements ECGManager {
                 int id = rs.getInt("id");
                 int patient_id = rs.getInt("patientId");
                 String ecgList = rs.getString("ecg");
-                ECG ecg = new ECG(id, ecgList, observations, patient_id);
+                ECG ecg = new ECG(id, ecgList, patient_id);
                 ecgs.add(ecg);
             }
             rs.close();
@@ -143,16 +140,15 @@ public class JDBCECGManager implements ECGManager {
     @Override
     public void setECG(ECG ecg, int id) {
         try {
-            String sql = "UPDATE ECG SET observation = ?, ecg = ?, patientId = ? WHERE id = ?";
+            String sql = "UPDATE ECG SET ecg = ?, patientId = ? WHERE id = ?";
             PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-            prep.setString(1, ecg.getObservations());
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(ecg.getEcg());
             byte[] bytes = bos.toByteArray();
-            prep.setBytes(2, bytes);//Revisar que esté bien
-            prep.setInt(3, ecg.getPatient_id());
-            prep.setInt(4, id);
+            prep.setString(1, ecg.getEcg());//Revisar que esté bien
+            prep.setInt(2, ecg.getPatient_id());
+            prep.setInt(3, id);
             prep.executeUpdate();
             prep.close();
         } catch (SQLException ex) {

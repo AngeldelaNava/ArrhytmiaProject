@@ -24,10 +24,8 @@ public class menu {
     private static MenuGUI menuInstance;
 
     public static void main(String[] args) throws Exception { //establece conexión con el servidor a través del socket
-        SocketObject socket;
-        socket = new SocketObject();
-        JDBCManager manager;
-        manager = new JDBCManager();
+        SocketObject socket = new SocketObject();
+        JDBCManager manager = new JDBCManager();
 
         try {
             Socket s = new Socket("localhost", 10000);
@@ -35,24 +33,33 @@ public class menu {
             //OutputStream y ObjectOutputStream es para que el cliente envíe datos y objetos
             //InputStream y ObjectInputStream es para que el cliente reciba datos y objetos
             //con el getOutputStream o getInputStream cogemos channels
-            socket.setOutputStream(socket.getSocket().getOutputStream());
-            socket.setObjectOutputStream(new ObjectOutputStream(socket.getOutputStream()));
-            socket.setInputStream(socket.getSocket().getInputStream());
-            socket.setObjectInputStream(new ObjectInputStream(socket.getInputStream()));
+            ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(s.getInputStream());
+
+            socket.setSocket(s);
+            socket.setOutputStream(oos);
+            socket.setObjectOutputStream(oos);
+            socket.setInputStream(ois);
+            socket.setObjectInputStream(ois);
+
+            // Realizar operaciones de escritura/lectura según sea necesario
             socket.getOutputStream().write(1);
+            menuInstance = new MenuGUI(socket, manager);
+            JFrame frame = new JFrame();
+            menuInstance.setFrame(frame);
+            menuInstance.setMenu(menuInstance); // Se asigna la instancia
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicación al cerrar la ventana
+            frame.getContentPane().add(menuInstance);
+            frame.pack();
+            /*menuInstance.setMenu(menuInstance); //se asigna la instancia
+            menuInstance.getFrame().add(menuInstance);
+            menuInstance.getFrame().pack();
+            menuInstance.getFrame().setVisible(true);*/ // se abre GUI
+            menuInstance.setVisible(true); //se abre GUI
         } catch (IOException ex) {
             System.out.println("Error in connection");//se imprime mensaje de error
             Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);//se registra la excepcion
             System.exit(-1);//se sale del programa con un codigo de error
         }
-        //
-        menuInstance = new MenuGUI(socket, manager);
-        JFrame frame = new JFrame();
-        menuInstance.setFrame(frame);
-        menuInstance.setMenu(menuInstance); //se asigna la instancia
-        menuInstance.getFrame().add(menuInstance);
-        menuInstance.getFrame().pack();
-        menuInstance.getFrame().setVisible(true); // se abre GUI
-        menuInstance.setVisible(true); //se abre GUI
     }
 }
