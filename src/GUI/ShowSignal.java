@@ -294,12 +294,12 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
         // TODO add your handling code here:
         ArrayList<ECG> ecgs = ecgManager.findECGByPatient(patient.getId()); //creamos arraylist
         SignalsRegistered signalsregistered = new SignalsRegistered(manager, patientManager, ecgManager, socket, ecgs, patient);
-        signalsregistered.setFrame(frame);
+        signalsregistered.setFrame(new JFrame());
         signalsregistered.setSignalsRegistered(signalsregistered);
         signalsregistered.getFrame().add(signalsregistered);
         signalsregistered.getFrame().pack();
         signalsregistered.getFrame().setVisible(true);
-        this.setVisible(false);
+        frame.dispose();
         //signalsregistered.setVisible(true);
         int option = 2;//OPTION 1 IS SHOW PLOT
         try {

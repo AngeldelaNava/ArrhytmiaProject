@@ -243,7 +243,9 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
         showSignal = new ShowSignal(manager, patientManager, ecgManager, socket, patient, signalsRegistered, ecg);
         showSignal.setFrame(new JFrame());
         showSignal.setShowSignal(showSignal);
-        showSignal.setVisible(true);
+        showSignal.getFrame().add(showSignal);
+        showSignal.getFrame().pack();
+        showSignal.getFrame().setVisible(true);
         int option = 1;
         try {
             socket.getOutputStream().write(option);
