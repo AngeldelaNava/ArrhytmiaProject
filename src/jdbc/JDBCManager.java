@@ -76,6 +76,11 @@ public class JDBCManager implements Manager {
                     + " observation TEXT NOT NULL, " + " ecg TEXT NOT NULL, date TEXT NOT NULL,"
                     + "patientId INTEGER REFERENCES Patient(id) ON UPDATE CASCADE ON DELETE CASCADE)";
             stmt.executeUpdate(sq1);
+            String sq2 = "CREATE TABLE IF NOT EXISTS ECG " + "(id     INTEGER  PRIMARY KEY AUTOINCREMENT,"
+                    + " date DATE NOT NULL, "  
+                    + " patient_id INTEGER, " + " FOREIGN KEY(patient_id) REFERENCES patient(id))"
+                    + "day TEXT NOT NULL" + "month TEXT NOT NULL" + "year TEXT NOT NULL";
+            stmt.executeUpdate(sq2);
             stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();

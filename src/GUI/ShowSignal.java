@@ -39,11 +39,11 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
     private SocketObject socket;
     private Patient patient;
     private SignalsRegistered signalsRegistered;
-    private ECG ecg;
+    private String ecg;
     private ShowSignal showSignal;
     private JFrame frame;
 
-    public ShowSignal(JDBCManager manager, JDBCPatientManager patientManager, JDBCECGManager ecgManager, SocketObject socket, Patient patient, SignalsRegistered signalsRegistered, ECG ecg) {
+    public ShowSignal(JDBCManager manager, JDBCPatientManager patientManager, JDBCECGManager ecgManager, SocketObject socket, Patient patient, SignalsRegistered signalsRegistered, String ecg) {
         this.manager = manager;
         this.patientManager = patientManager;
         this.ecgManager = ecgManager;
@@ -145,11 +145,11 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
         this.signalsRegistered = signalsRegistered;
     }
 
-    public ECG getEcg() {
+    public String getEcg() {
         return ecg;
     }
 
-    public void setEcg(ECG ecg) {
+    public void setEcg(String ecg) {
         this.ecg = ecg;
     }
 
@@ -292,7 +292,7 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
 
     private void GoBackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GoBackButtonActionPerformed
         // TODO add your handling code here:
-        ArrayList<ECG> ecgs = ecgManager.findECGByPatient(patient.getId()); //creamos arraylist
+        ArrayList<String> ecgs = ecgManager.findECGByPatientId(patient.getId()); //creamos arraylist
         SignalsRegistered signalsregistered = new SignalsRegistered(manager, patientManager, ecgManager, socket, ecgs, patient);
         signalsregistered.setFrame(new JFrame());
         signalsregistered.setSignalsRegistered(signalsregistered);
@@ -301,9 +301,9 @@ public class ShowSignal extends javax.swing.JFrame implements WindowListener {
         signalsregistered.getFrame().setVisible(true);
         frame.dispose();
         //signalsregistered.setVisible(true);
-        int option = 2;//OPTION 1 IS SHOW PLOT
+        //OPTION 1 IS SHOW PLOT
         try {
-            socket.getOutputStream().write(option);
+            socket.getOutputStream().write(2);
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }

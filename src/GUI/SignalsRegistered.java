@@ -25,19 +25,18 @@ import jdbc.JDBCPatientManager;
  */
 public class SignalsRegistered extends javax.swing.JPanel implements WindowListener {
 
-    private Object bean;
     private JDBCManager manager;
     private JDBCPatientManager patientManager;
     private JDBCECGManager ecgManager;
     private SocketObject socket;
-    private ArrayList<ECG> ecgs;
+    private ArrayList<String> ecgs;
     private Patient patient;
     private SignalsRegistered signalsRegistered;
     private ShowSignal showSignal;
     private JFrame frame;
     int signalId;
 
-    public SignalsRegistered(JDBCManager manager, JDBCPatientManager patientManager, JDBCECGManager ecgManager, SocketObject socket, ArrayList<ECG> ecgs, Patient patient) {
+    public SignalsRegistered(JDBCManager manager, JDBCPatientManager patientManager, JDBCECGManager ecgManager, SocketObject socket, ArrayList<String> ecgs, Patient patient) {
         this.manager = manager;
         this.patientManager = patientManager;
         this.ecgManager = ecgManager;
@@ -48,9 +47,8 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
 
         DefaultTableModel tblModel = (DefaultTableModel) DataTable.getModel();
         for (int i = 0; i < ecgs.size(); i++) {
-            int id = ecgs.get(i).getId();
-            String date = ecgs.get(i).getDate();
-            String[] data = {Integer.toString(id), date};
+            String ecgData = ecgs.get(i);
+            String[] data = {Integer.toString(i+1), ecgData};
             tblModel.addRow(data);
         }
     }
@@ -76,10 +74,6 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
 
     public void setSignalsRegistered(SignalsRegistered signalsRegistered) {
         this.signalsRegistered = signalsRegistered;
-    }
-
-    public void setObject(Object bean) {
-        this.bean = bean;
     }
 
     /**
@@ -239,16 +233,16 @@ public class SignalsRegistered extends javax.swing.JPanel implements WindowListe
 
     private void ViewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewButtonActionPerformed
         // TODO add your handling code here:
-        ECG ecg = ecgManager.findECG(signalId);
-        showSignal = new ShowSignal(manager, patientManager, ecgManager, socket, patient, signalsRegistered, ecg);
+        //ECG ecg = ecgManager.findECG(signalId);
+        String ecgData = ecgs.get(signalId-1);
+        showSignal = new ShowSignal(manager, patientManager, ecgManager, socket, patient, signalsRegistered, ecgData);
         showSignal.setFrame(new JFrame());
         showSignal.setShowSignal(showSignal);
         showSignal.getFrame().add(showSignal);
         showSignal.getFrame().pack();
         showSignal.getFrame().setVisible(true);
-        int option = 1;
         try {
-            socket.getOutputStream().write(option);
+            socket.getOutputStream().write(1);
         } catch (IOException ex) {
             Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
         }

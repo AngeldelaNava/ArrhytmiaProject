@@ -50,7 +50,7 @@ public class ServerThreads implements Runnable{
             ECGmanager = manager.getECG();
             Patient p;
             ECG ecg;
-            ArrayList<ECG> ecgs = null;
+            ArrayList<String> ecgs = null;
             ArrayList<Patient> ps = null;
             String username;
             boolean usernameExists;
@@ -91,13 +91,29 @@ public class ServerThreads implements Runnable{
                         if(correct){
                             variable = inputStream.read(); //SI RECIBE UN 0 DE LA CLASE menu TODO CORRECTO
                             if(variable==0){
-                            try{
-                                p = patientManager.searchPatient(username, password);
-                                objectOutputStream.writeObject(p);
-                            }catch (EOFException ex) {
-                                Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);                            
+                                try{
+                                    p = patientManager.searchPatient(username, password);
+                                    objectOutputStream.writeObject(p);
+                                }catch (EOFException ex) {
+                                    Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);                            
+                                }
                             }
-                        }
+                            int option2 = inputStream.read(); //EN MENU AFTER LOG IN SE ESCOGE VIEW MY DATA 1 O RECORD 2
+                            switch(option2){
+                                case 1:
+                                    int patientId=inputStream.read();
+                                    ecgs = ECGmanager.findECGByPatientId(patientId);
+                                    //outputStream.write(ecgs.size());
+                                    for(int i=0; i<ecgs.size(); i++){
+                                        objectOutputStream.writeObject(ecgs.get(i));
+                                    }
+                                    int view = inputStream.read();
+                                    while(view==1){ //view signals
+                                        
+                                    }
+                            
+                            }
+
                         }
                     }break;
             }

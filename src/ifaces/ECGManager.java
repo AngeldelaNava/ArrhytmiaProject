@@ -17,9 +17,7 @@ public interface ECGManager {
 
     public ECG findECG(int id);
 
-    public ArrayList<ECG> findECGByPatient(int patient_id);
-
-    public ArrayList<ECG> findECGByObservationFragment(String text);
+    public ArrayList<String> findECGByPatientId(int patient_id);
 
     public void deleteECG(int id);
 

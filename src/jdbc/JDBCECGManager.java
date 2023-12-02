@@ -78,43 +78,16 @@ public class JDBCECGManager implements ECGManager {
     }
 
     @Override
-    public ArrayList<ECG> findECGByPatient(int patient_id) {
-        ArrayList<ECG> ecgs = new ArrayList<>();
+    public ArrayList<String> findECGByPatientId(int id) {
+        ArrayList<String> ecgs = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM ECG WHERE patientId = ?";
+            String sql = "SELECT * FROM ECG WHERE patient_id = ?";
             PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-            prep.setInt(1, patient_id);
+            prep.setInt(1, id);
             ResultSet rs = prep.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("id");
-                String ecgList = rs.getString("ecg");
-                String date = rs.getString("date");
-                ECG ecg = new ECG(id, patient_id, date, ecgList);
-                ecgs.add(ecg);
-            }
-            rs.close();
-            prep.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(JDBCECGManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return ecgs;
-    }
-
-    @Override
-    public ArrayList<ECG> findECGByObservationFragment(String text) {
-        ArrayList<ECG> ecgs = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM ECG WHERE observation = *?*";
-            PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-            prep.setString(1, text);
-            ResultSet rs = prep.executeQuery();
-            if (rs.next()) {
-                String observations = rs.getString("observation");
-                int id = rs.getInt("id");
-                int patient_id = rs.getInt("patientId");
-                String ecgList = rs.getString("ecg");
-                ECG ecg = new ECG(id, ecgList, patient_id);
-                ecgs.add(ecg);
+            while (rs.next()) {
+            String ecgList = rs.getString("ecg");
+            ecgs.add(ecgList);
             }
             rs.close();
             prep.close();
