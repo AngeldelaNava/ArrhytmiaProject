@@ -357,7 +357,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
             menuAfter.getFrame().add(menuAfter);
             menuAfter.getFrame().pack();
             menuAfter.getFrame().setVisible(true);
-            int option = 1;
+            int option = 0;
             try {
                 socket.getOutputStream().write(option);
             } catch (IOException ex) {
