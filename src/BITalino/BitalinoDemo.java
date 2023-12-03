@@ -4,8 +4,6 @@
  */
 package BITalino;
 
-import java.io.BufferedReader;
-import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +14,7 @@ import javax.bluetooth.RemoteDevice;
  * @author maria
  */
 public class BitalinoDemo {
+
     private static Frame[] frames;
     private static String signalData = "";
 
@@ -27,7 +26,7 @@ public class BitalinoDemo {
             int samplingRate = 10;
             bitalino.open(macAddress, samplingRate);
 
-            int[] channelsToAcquire = { 1, 5 };
+            int[] channelsToAcquire = {1, 2};
             bitalino.start(channelsToAcquire);
 
             int blockSize = 10;
@@ -67,5 +66,3 @@ public class BitalinoDemo {
         return this.signalData;
     }
 }
-
-
