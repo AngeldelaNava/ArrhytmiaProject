@@ -40,6 +40,7 @@ public class MenuAfterLogIn extends javax.swing.JFrame implements WindowListener
         this.socket = socket;
         this.jdbcmanager = jdbcmanager;
         this.jdbcpatientmanager = jdbcpatientmanager;
+        initComponents();
     }
 
     public JFrame getFrame() {

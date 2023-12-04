@@ -27,12 +27,14 @@ public class Server {
     public static void main(String[] args) {
         ServerSocket serverSocket;
         Socket socket = null;
-        InputStream inputStream;
+        InputStream inputStream = null;
         manager = new JDBCManager();
         manager.connect();
         manager.createTables();
         try {
             serverSocket = new ServerSocket(10000);
+           // System.out.println("servidor iniciado");
+     
             new Server().startServer(serverSocket);
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,18 +69,4 @@ public class Server {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    // Broadcast a message to all connected clients
-    /*public void broadcastMessage(String message, ClientHandler sender) {
-        for (ClientHandler client : clients) {
-            if (client != sender) {
-                client.sendMessage(message);
-            }
-        }
-    }
-
-    // Remove a client when they disconnect (elimina al cliente de la lista de clientes activos)
-    public void removeClient(ClientHandler client) {
-        clients.remove(client);
-    }*/
 }

@@ -352,12 +352,11 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         boolean userCheck = patientManager.verifyUsername(username);
         if (!userCheck) {//if the username is correct(exists)
             menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
-            //menuAfter.setFrame(new JFrame("Menu After Log In"));
-            JFrame menuAfterFrame = new JFrame("Menu After Log In");
-            menuAfterFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Cierra solo esta ventana al presionar el botón de cierre
-            menuAfterFrame.getContentPane().add(menuAfter);  // Agrega el panel al JFrame
-            menuAfterFrame.pack();
-            menuAfterFrame.setVisible(true);
+            menuAfter.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            menuAfter.addWindowListener(this);
+            menuAfter.pack();
+            menuAfter.setVisible(true);
+            frame.dispose();
             try {
                 socket.getOutputStream().write(0);
             } catch (IOException ex) {
