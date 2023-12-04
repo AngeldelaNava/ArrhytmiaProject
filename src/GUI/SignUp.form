@@ -48,7 +48,7 @@
                           <Component id="GenderBox" pref="100" max="32767" attributes="0"/>
                           <Component id="EmailField" max="32767" attributes="0"/>
                           <Component id="UsernameField" max="32767" attributes="0"/>
-                          <Component id="PasswordField" pref="0" max="32767" attributes="0"/>
+                          <Component id="j" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -93,7 +93,7 @@
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="PasswordField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="j" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Component id="SignUp" min="-2" max="-2" attributes="0"/>
@@ -170,12 +170,9 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="UsernameFieldActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JPasswordField" name="PasswordField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
+    <Component class="javax.swing.JPasswordField" name="j">
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="PasswordFieldActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="Exit">

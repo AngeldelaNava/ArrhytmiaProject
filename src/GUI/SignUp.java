@@ -134,7 +134,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         GenderBox = new javax.swing.JComboBox<>();
         EmailField = new javax.swing.JTextField();
         UsernameField = new javax.swing.JTextField();
-        PasswordField = new javax.swing.JPasswordField();
+        j = new javax.swing.JPasswordField();
         Exit = new javax.swing.JButton();
         SignUp = new javax.swing.JButton();
 
@@ -185,10 +185,9 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
             }
         });
 
-        PasswordField.setText("jPasswordField1");
-        PasswordField.addActionListener(new java.awt.event.ActionListener() {
+        j.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PasswordFieldActionPerformed(evt);
+                jActionPerformed(evt);
             }
         });
 
@@ -234,7 +233,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
                             .addComponent(GenderBox, 0, 100, Short.MAX_VALUE)
                             .addComponent(EmailField)
                             .addComponent(UsernameField)
-                            .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))
+                            .addComponent(j, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(147, 147, 147)
                         .addComponent(SignUp)))
@@ -268,7 +267,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(PasswordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(j, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(26, 26, 26)
                 .addComponent(SignUp)
                 .addContainerGap(27, Short.MAX_VALUE))
@@ -277,39 +276,19 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RecordECG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RecordECG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RecordECG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RecordECG.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+        // ... (código existente)
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //JFrame frame = new JFrame();
-                SignUp signUp = new SignUp();
-                signUp.setFrame(new JFrame());
-                signUp.frame.add(signUp);
-                signUp.frame.pack();
-                signUp.frame.setVisible(true); //se abre la ventana de record
+                JFrame frame = new JFrame();
+                SignUp signUp = new SignUp();  // Crear instancia de SignUp
+                signUp.setFrame(frame);  // Asegúrate de llamar a setFrame para inicializar la referencia frame
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.getContentPane().add(signUp);
+                frame.pack();
+                frame.setVisible(true); //se abre la ventana de record
             }
         });
     }
@@ -338,14 +317,14 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         setUsername(UsernameField.getText());
     }//GEN-LAST:event_UsernameFieldActionPerformed
 
-    private void PasswordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordFieldActionPerformed
-        char[] arregloContraseña = PasswordField.getPassword();
+    private void jActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jActionPerformed
+        char[] arregloContraseña = j.getPassword();
         StringBuilder sb = new StringBuilder();
         for (char c : arregloContraseña) {
             sb.append(c);
         }
         setPassword(sb.toString());
-    }//GEN-LAST:event_PasswordFieldActionPerformed
+    }//GEN-LAST:event_jActionPerformed
 
     private void SignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpActionPerformed
         patientManager = new JDBCPatientManager(manager);
@@ -362,7 +341,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
             } catch (IOException ex) {
                 Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
             }
-            frame.dispose();
+
         } else {//if the username does exist
             System.out.println("Incorrect username or password");
         }
@@ -379,9 +358,9 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
     private javax.swing.JComboBox<String> GenderBox;
     private javax.swing.JTextField LastNameField;
     private javax.swing.JTextField NameField;
-    private javax.swing.JPasswordField PasswordField;
     private javax.swing.JButton SignUp;
     private javax.swing.JTextField UsernameField;
+    private javax.swing.JPasswordField j;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
