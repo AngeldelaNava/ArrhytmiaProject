@@ -352,25 +352,20 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         boolean userCheck = patientManager.verifyUsername(username);
         if (!userCheck) {//if the username is correct(exists)
             menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
-            menuAfter.setFrame(new JFrame());
-            menuAfter.setMenuAfterLogIn(menuAfter);
-            menuAfter.getFrame().add(menuAfter);
-            menuAfter.getFrame().pack();
-            menuAfter.getFrame().setVisible(true);
-            int option = 0;
+            //menuAfter.setFrame(new JFrame("Menu After Log In"));
+            JFrame menuAfterFrame = new JFrame("Menu After Log In");
+            menuAfterFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);  // Cierra solo esta ventana al presionar el botón de cierre
+            menuAfterFrame.getContentPane().add(menuAfter);  // Agrega el panel al JFrame
+            menuAfterFrame.pack();
+            menuAfterFrame.setVisible(true);
             try {
-                socket.getOutputStream().write(option);
+                socket.getOutputStream().write(0);
             } catch (IOException ex) {
-                Logger.getLogger(MenuGUI.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
             }
             frame.dispose();
-            //this.signup.setVisible(false);//for closing the current window
         } else {//if the username does exist
-            try {
-                throw new Exception("Incorrect username or password");
-            } catch (Exception ex) {
-                Logger.getLogger(LogIn.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            System.out.println("Incorrect username or password");
         }
     }//GEN-LAST:event_SignUpActionPerformed
 

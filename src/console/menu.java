@@ -45,17 +45,13 @@ public class menu {
             // Realizar operaciones de escritura/lectura según sea necesario
             socket.getOutputStream().write(1);
             menuInstance = new MenuGUI(socket, manager);
-            JFrame frame = new JFrame();
-            menuInstance.setFrame(frame);
-            menuInstance.setMenu(menuInstance); // Se asigna la instancia
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Cierra la aplicación al cerrar la ventana
+            JFrame frame = new JFrame("Menu");
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.getContentPane().add(menuInstance);
             frame.pack();
-            /*menuInstance.setMenu(menuInstance); //se asigna la instancia
-            menuInstance.getFrame().add(menuInstance);
-            menuInstance.getFrame().pack();
-            menuInstance.getFrame().setVisible(true);*/ // se abre GUI
-            menuInstance.setVisible(true); //se abre GUI
+            frame.setLocationRelativeTo(null); // Centrar la ventana en la pantalla
+            frame.setVisible(true); //se abre GUI
+            //frame.dispose();
         } catch (IOException ex) {
             System.out.println("Error in connection");//se imprime mensaje de error
             Logger.getLogger(menu.class.getName()).log(Level.SEVERE, null, ex);//se registra la excepcion

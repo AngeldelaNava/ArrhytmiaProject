@@ -31,7 +31,7 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
     private JDBCManager manager;
     public LogIn login;
     public SignUp signup;
-    private JFrame frame;
+    private JFrame frame = new JFrame();
     private LogInPanel loginPanel;
     private SignUpPanel signUpPanel;
 
@@ -138,15 +138,19 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         }
         manager.connect();
         signup = new SignUp(socket, manager);
-        //frame.setVisible(false);
         frame.dispose();
+        JFrame frame = new JFrame("Sign up");
+        frame.setContentPane(signup);  // Establecer el contenido en lugar de agregar el JFrame
+        frame.pack();
+        frame.setVisible(true);
+        /*JFrame frame = new JFrame("Sign up");
         signup.setFrame(new JFrame());
         signup.setSignup(signup); // aqui estaba log in // //
         signup.getFrame().add(signup);
         signup.getFrame().pack();
         signup.getFrame().setVisible(true);
         //signup.setVisible(true);
-        frame.dispose();
+        //frame.dispose();*/
         try {
             socket.getOutputStream().write(1); //CASE 1
         } catch (IOException ex) {
@@ -162,8 +166,8 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         }
         manager.connect();
         login = new LogIn(socket, manager);
-        //frame.setVisible(false);//  se oculta ventana actual
         frame.dispose();
+        JFrame frame = new JFrame("Log in");
         login.setFrame(new JFrame());
         login.setLogin(login);
         login.getFrame().add(login);
@@ -219,7 +223,7 @@ public class MenuGUI extends javax.swing.JPanel implements WindowListener {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                //JFrame frame = new JFrame();
+                JFrame frame = new JFrame();
                 MenuGUI menuGUI = new MenuGUI();
                 menuGUI.setFrame(new JFrame());
                 menuGUI.frame.add(menuGUI);
