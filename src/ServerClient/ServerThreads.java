@@ -64,22 +64,22 @@ public class ServerThreads implements Runnable {
             if (medicoOpaciente == 1) { //CLIENTE
                 int option = inputStream.read(); //CLIENTE ESCOGE BOTÓN
                 switch (option) {
-                    case 0:
-
-                        break;
                     case 1: //se abre menu GUI (sign up)
                         username = bufferedReader.readLine();
                         usernameExists = patientManager.verifyUsername(username);
                         objectOutputStream.writeObject(usernameExists);
-                        if (usernameExists) {
-                            try {
-                                p = (Patient) (objectInputStream.readObject());
-                                patientManager.addPatient(p);
-                                String resultString = new String(p.getPassword());
-                                p = patientManager.searchPatient(p.getUsername(), resultString);
-                                objectOutputStream.writeObject(p);
-                            } catch (ClassNotFoundException ex) {
-                                Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
+                        if (!usernameExists) {
+                            int option2 = inputStream.read(); //SI COGE UN 0 HACEMOS SIGN UP
+                            if(option2 == 0){
+                                try {
+                                    p = (Patient) (objectInputStream.readObject());
+                                    patientManager.addPatient(p);
+                                    String resultString = new String(p.getPassword());
+                                    p = patientManager.searchPatient(p.getUsername(), resultString);
+                                    objectOutputStream.writeObject(p);
+                                } catch (ClassNotFoundException ex) {
+                                    Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
                         }
                         break;

@@ -4,10 +4,10 @@
  */
 package GUI;
 
+import Client.Patient;
 import Client.SocketObject;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
@@ -18,17 +18,17 @@ import jdbc.JDBCPatientManager;
  *
  * @author maria
  */
-public class SignUp extends javax.swing.JPanel implements WindowListener {
+public class SignUp extends javax.swing.JPanel {
 
     private SocketObject socket; //necesitamos un socket para acda conexión que queramos hacer
     private SignUp signup;
     public MenuGUI menu;
-    private String name;
+    /*private String name;
     private String lastname;
     private String gender;
     private String email;
     private String username;
-    private String password;
+    private String password;*/
     private JDBCPatientManager patientManager;
     private JDBCManager manager;
     private JFrame frame;
@@ -67,7 +67,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
         this.signup = signup;
     }
 
-    public String getName() {
+   /* public String getName() {
         return name;
     }
 
@@ -113,7 +113,7 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
 
     public void setUsername(String username) {
         this.username = username;
-    }
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -294,56 +294,54 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
     }
 
     private void NameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NameFieldActionPerformed
-        setName(NameField.getText());
     }//GEN-LAST:event_NameFieldActionPerformed
 
     private void LastNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LastNameFieldActionPerformed
-        setLastname(LastNameField.getText());
     }//GEN-LAST:event_LastNameFieldActionPerformed
 
     private void GenderBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenderBoxActionPerformed
-        if (GenderBox.getSelectedItem().toString().equals("Male")) {
-            setGender("M");
-        } else {
-            setGender("F");
-        }
+        
     }//GEN-LAST:event_GenderBoxActionPerformed
 
     private void EmailFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmailFieldActionPerformed
-        setEmail(EmailField.getText());
     }//GEN-LAST:event_EmailFieldActionPerformed
 
     private void UsernameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsernameFieldActionPerformed
-        setUsername(UsernameField.getText());
     }//GEN-LAST:event_UsernameFieldActionPerformed
 
     private void jActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jActionPerformed
-        char[] arregloContraseña = j.getPassword();
-        StringBuilder sb = new StringBuilder();
-        for (char c : arregloContraseña) {
-            sb.append(c);
-        }
-        setPassword(sb.toString());
+        
     }//GEN-LAST:event_jActionPerformed
 
     private void SignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SignUpActionPerformed
+        PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
         patientManager = new JDBCPatientManager(manager);
+        String username = UsernameField.getText();
         boolean userCheck = patientManager.verifyUsername(username);
-        if (!userCheck) {//if the username is correct(exists)
-            menuAfter = new MenuAfterLogIn(socket, manager, patientManager);
-            menuAfter.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            menuAfter.addWindowListener(this);
-            menuAfter.pack();
-            menuAfter.setVisible(true);
-            frame.dispose();
-            try {
-                socket.getOutputStream().write(0);
-            } catch (IOException ex) {
-                Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+        if(!userCheck){
+            String name = NameField.getText();
+            String lastname = LastNameField.getText();
+            String gender;
+            if (GenderBox.getSelectedItem().toString().equals("Male")) {
+                gender = "M";
+            } else {
+                gender = "F"; 
             }
-
-        } else {//if the username does exist
-            System.out.println("Incorrect username or password");
+            String email = EmailField.getText();
+            String password = new String(j.getPassword());
+            Patient patient = new Patient (name, lastname, gender, email, username, password);
+            menuAfter=new MenuAfterLogIn(socket);
+            menuAfter.setMenuAfterLogIn(menuAfter);
+            try{
+                socket.getOutputStream().write(0);
+                socket.getObjectOutputStream().writeObject(patient);
+                Patient p = (Patient) (socket.getObjectInputStream().readObject());
+                menuAfter.setPatient(p);
+            }catch (ClassNotFoundException | IOException ex) {
+                        Logger.getLogger(SignUp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            menu.setVisible(true); //se muestra la ventana de las opciones del cliente (record signal & my signals)
+            this.signup.setVisible(false);
         }
     }//GEN-LAST:event_SignUpActionPerformed
 
@@ -369,39 +367,5 @@ public class SignUp extends javax.swing.JPanel implements WindowListener {
     private javax.swing.JLabel jLabel6;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }
