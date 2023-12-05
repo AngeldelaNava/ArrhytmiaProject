@@ -282,13 +282,15 @@ public class SignUp extends javax.swing.JPanel {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JFrame frame = new JFrame();
+                new SignUp().setVisible(true); //se activa la ventana del sign up
+
+                /*JFrame frame = new JFrame();
                 SignUp signUp = new SignUp();  // Crear instancia de SignUp
                 signUp.setFrame(frame);  // Asegúrate de llamar a setFrame para inicializar la referencia frame
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frame.getContentPane().add(signUp);
                 frame.pack();
-                frame.setVisible(true); //se abre la ventana de record
+                frame.setVisible(true);*/ //se abre la ventana de record
             }
         });
     }

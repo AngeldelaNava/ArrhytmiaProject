@@ -60,8 +60,6 @@ public class ServerThreads implements Runnable {
             objectInputStream = new ObjectInputStream(inputStream);     //se inicializa la variable object inputstream al inputstrema (para poder leer objetos)
             outputStream = socket.getOutputStream();    //se inicializa la variable outputstream al socket (para poder escribir)
             objectOutputStream = new ObjectOutputStream(outputStream);
-            int medicoOpaciente = inputStream.read();
-            if (medicoOpaciente == 1) { //CLIENTE
                 int option = inputStream.read(); //CLIENTE ESCOGE BOTÓN
                 switch (option) {
                     case 1: //se abre menu GUI (sign up)
@@ -114,14 +112,11 @@ public class ServerThreads implements Runnable {
                                         while (view == 1) { //view signals
 
                                         }
-
                                 }
-
                             }
                         }
                         break;
                 }
-            }
         } catch (IOException ex) {
             Logger.getLogger(ServerThreads.class.getName()).log(Level.SEVERE, null, ex);
         }
